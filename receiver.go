@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"log"
 
 	"github.com/emersion/go-imap"
@@ -26,6 +27,10 @@ func main() {
 
 	// Don't forget to logout
 	defer c.Logout()
+
+	if err = c.StartTLS(&tls.Config{InsecureSkipVerify: true}); err != nil {
+		log.Fatal(err)
+	}
 
 	// Login
 	if err := c.Login(username, password); err != nil {
